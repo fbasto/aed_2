@@ -1,3 +1,5 @@
+import tsp_solver
+
 class Graph:
 	def __init__(self):
 		self.vertList = {}
@@ -22,8 +24,34 @@ class Graph:
 		self.vertList[f].addNeighbor(self.vertList[t], cost)
 	def getVertices(self):
 		return self.vertList.keys()
+	def getStarter(self):
+		for i in self.vertList:
+			print("boolstart=",i.getBoolStart())
+			if(i.getBoolStart()):
+				return self.vertList[i]
 	def __iter__(self):
 		return iter(self.vertList.values())
+	def transformToMatrix(self):
+		starter = g.getStarter()
+		counter = 0
+		for i in self.vertList:
+			# if(i != starter):
+			matrix[0][counter] = starter.getWeight(i)
+			matrix[counter][0] = starter.getWeight(i)
+			counter=counter+1
+			# else:
+			# 	matrix[0][counter] = 0
+		row = 1
+		counter = 1;
+		for j in self.vertList:
+			for k in self.vertList:
+				matrix[row][counter] = j.getWeight(k)
+				matrix[counter][row] = j.getWeight(k)
+				counter=counter+1
+			row=row+1
+		# print(matrix)
+		return matrix
+
 
 class Vertex:
 	def __init__(self,key):
@@ -42,6 +70,8 @@ class Vertex:
 		return self.id
 	def getWeight(self,nbr):
 		return self.connectedTo[nbr]
+	def getBoolStart(self):
+		return self.boolstartin;
 
 g = Graph()
 print("Para adicionar o nó inicial: \"startin <nome>\" ;\nPara adicionar ligação entre dois nós: \"<nó1> <nó2> <peso>\" .")
@@ -66,6 +96,9 @@ while(True):
 		if(g.getVertex(node2) == None):
 			g.addVertex(node2)
 		g.addEdge(node1,node2,weight)
+matrix = g.transformToMatrix()
+
 print(g.getVertices())
 
 # TODO aqui encontrar caminho
+print("a")
