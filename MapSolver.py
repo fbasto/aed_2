@@ -25,28 +25,33 @@ class Graph:
 	def getVertices(self):
 		return self.vertList.keys()
 	def getStarter(self):
-		for i in self.vertList:
-			print("boolstart=",i.getBoolStart())
+		for i in list(self.vertList.values()):
+			# print("boolstart=",i.getBoolStart())
 			if(i.getBoolStart()):
-				return self.vertList[i]
+				return i
 	def __iter__(self):
 		return iter(self.vertList.values())
 	def transformToMatrix(self):
+		matrix =  [[0 for x in range(len(self.getVertices()))] for y in range(len(self.getVertices()))] 
 		starter = g.getStarter()
 		counter = 0
-		for i in self.vertList:
+		for i in list(self.vertList.keys()):
 			# if(i != starter):
-			matrix[0][counter] = starter.getWeight(i)
-			matrix[counter][0] = starter.getWeight(i)
+			# print("->",type(starter))
+			# print("<-",type(i))
+			print("i get id", i.getId())
+			print(starter)
+			matrix[0][counter] = starter.getWeight(i.getId())
+			matrix[counter][0] = starter.getWeight(i.getId())
 			counter=counter+1
 			# else:
 			# 	matrix[0][counter] = 0
 		row = 1
 		counter = 1;
-		for j in self.vertList:
-			for k in self.vertList:
-				matrix[row][counter] = j.getWeight(k)
-				matrix[counter][row] = j.getWeight(k)
+		for j in list(self.vertList.values()):
+			for k in list(self.vertList.values()):
+				matrix[row][counter] = j.getWeight(k.getId())
+				matrix[counter][row] = j.getWeight(k.getId())
 				counter=counter+1
 			row=row+1
 		# print(matrix)
@@ -96,9 +101,9 @@ while(True):
 		if(g.getVertex(node2) == None):
 			g.addVertex(node2)
 		g.addEdge(node1,node2,weight)
+print(g.getVertices())
 matrix = g.transformToMatrix()
 
-print(g.getVertices())
 
 # TODO aqui encontrar caminho
 print("a")
