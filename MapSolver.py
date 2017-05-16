@@ -32,29 +32,38 @@ class Graph:
 	def __iter__(self):
 		return iter(self.vertList.values())
 	def transformToMatrix(self):
-		matrix =  [[0 for x in range(len(self.getVertices()))] for y in range(len(self.getVertices()))] 
+		matrix = [[0 for x in range(len(self.getVertices()))] for y in range(len(self.getVertices()))] 
+		# print(matrix)
 		starter = g.getStarter()
 		counter = 0
-		for i in list(self.vertList.keys()):
-			# if(i != starter):
-			# print("->",type(starter))
-			# print("<-",type(i))
-			print("i get id", i.getId())
+		for i in list(self.vertList.values()):
 			print(starter)
-			matrix[0][counter] = starter.getWeight(i.getId())
-			matrix[counter][0] = starter.getWeight(i.getId())
+			if i != starter:
+				value = starter.getWeight(self.getVertex(i.getId()))
+				matrix[0][counter] = value
+				matrix[counter][0] = value
+				print("inseriu",value)
+			else:
+				matrix[0][counter] = 0
 			counter=counter+1
-			# else:
-			# 	matrix[0][counter] = 0
 		row = 1
 		counter = 1;
 		for j in list(self.vertList.values()):
 			for k in list(self.vertList.values()):
-				matrix[row][counter] = j.getWeight(k.getId())
-				matrix[counter][row] = j.getWeight(k.getId())
-				counter=counter+1
+				print("cmpring =",j.getId(),k.getId())
+				if j != starter and k != starter:
+					if j != k:
+						value = j.getWeight(self.getVertex(k.getId()))
+						matrix[row][counter] = value
+						matrix[counter][row] = value
+						counter=counter+1
+						print("inseriu",value)
+					else:
+						matrix[row][counter] = 0
+					counter=counter+1
 			row=row+1
-		# print(matrix)
+			counter=1
+		print(matrix)
 		return matrix
 
 
@@ -102,8 +111,8 @@ while(True):
 			g.addVertex(node2)
 		g.addEdge(node1,node2,weight)
 print(g.getVertices())
+# print(g.getVertex('1').getWeight(g.getVertex('2')))
 matrix = g.transformToMatrix()
-
 
 # TODO aqui encontrar caminho
 print("a")
