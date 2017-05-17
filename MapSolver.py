@@ -87,13 +87,24 @@ class Vertex:
 	def getBoolStart(self):
 		return self.boolstartin;
 
+def printMatrix(matrix):
+	strg = "1"
+	for i in range(1,len(matrix)):
+		strg = strg + "\t" + str(i+1)
+	print("\t",strg)
+	for k in range(0,len(matrix)):
+		strg = ""
+		for l in range(0,len(matrix)):
+			# print("num=",str(matrix[k][l]))
+			strg = strg + "\t" + str(matrix[k][l])
+		print(k+1,strg)
+
 g = Graph()
 print("Para adicionar o nó inicial: \"startin <nome>\" ;\nPara adicionar ligação entre dois nós: \"<nó1> <nó2> <peso>\" .")
 while(True):
 	userinput = input().split(' ')
-	print(userinput)
 
-	if(userinput[0]=='0'):
+	if(userinput[0]=='E'):
 		#print("breaking because EOF")
 		break
 
@@ -110,9 +121,19 @@ while(True):
 		if(g.getVertex(node2) == None):
 			g.addVertex(node2)
 		g.addEdge(node1,node2,weight)
-print(g.getVertices())
 # print(g.getVertex('1').getWeight(g.getVertex('2')))
-matrix = g.transformToMatrix()
+matrix = [[0 for x in range(len(g.getVertices()))] for y in range(len(g.getVertices()))] 
+i=0
+while(True):
+	userinput = input().split(' ')
+	if(userinput[0]=='E'):
+		#print("breaking because EOF")
+		break
+	else:
+		for j in range(0,len(g.getVertices())):
+			matrix[i][j] = userinput[j]
+	i=i+1
+printMatrix(matrix)
+
 
 # TODO aqui encontrar caminho
-print("a")
