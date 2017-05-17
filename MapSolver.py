@@ -104,7 +104,7 @@ print("Para adicionar o nó inicial: \"startin <nome>\" ;\nPara adicionar ligaç
 while(True):
 	userinput = input().split(' ')
 
-	if(userinput[0]=='E'):
+	if(userinput[0]=='M'):
 		#print("breaking because EOF")
 		break
 

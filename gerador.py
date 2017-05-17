@@ -89,7 +89,7 @@ def create_file(number,matrix,filename):
             else:
                 aux = aux + str(matrix[i][j]) + " "
         f.write(aux)
-    f.write("0")
+    f.write("E")
     f.close()
 
 
