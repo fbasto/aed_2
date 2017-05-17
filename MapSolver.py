@@ -31,40 +31,6 @@ class Graph:
 				return i
 	def __iter__(self):
 		return iter(self.vertList.values())
-	def transformToMatrix(self):
-		matrix = [[0 for x in range(len(self.getVertices()))] for y in range(len(self.getVertices()))] 
-		# print(matrix)
-		starter = g.getStarter()
-		counter = 0
-		for i in list(self.vertList.values()):
-			print(starter)
-			if i != starter:
-				value = starter.getWeight(self.getVertex(i.getId()))
-				matrix[0][counter] = value
-				matrix[counter][0] = value
-				print("inseriu",value)
-			else:
-				matrix[0][counter] = 0
-			counter=counter+1
-		row = 1
-		counter = 1;
-		for j in list(self.vertList.values()):
-			for k in list(self.vertList.values()):
-				print("cmpring =",j.getId(),k.getId())
-				if j != starter and k != starter:
-					if j != k:
-						value = j.getWeight(self.getVertex(k.getId()))
-						matrix[row][counter] = value
-						matrix[counter][row] = value
-						counter=counter+1
-						print("inseriu",value)
-					else:
-						matrix[row][counter] = 0
-					counter=counter+1
-			row=row+1
-			counter=1
-		print(matrix)
-		return matrix
 
 
 class Vertex:
@@ -99,15 +65,26 @@ def printMatrix(matrix):
 			strg = strg + "\t" + str(matrix[k][l])
 		print(k+1,strg)
 
+def calcDistance(path, matrix):
+	dist = 0
+	priorvertex = 0
+	for i in range(1,len(path)):
+		dist = dist + int(matrix[priorvertex][i-1])
+		priorvertex = i-1
+		print("dist updated to:",dist)
+	dist = dist + int(matrix[priorvertex][0])
+	print("final dist:",dist)
+	return dist
+
+
+
 g = Graph()
 print("Para adicionar o nó inicial: \"startin <nome>\" ;\nPara adicionar ligação entre dois nós: \"<nó1> <nó2> <peso>\" .")
 while(True):
 	userinput = input().split(' ')
-
 	if(userinput[0]=='M'):
 		#print("breaking because EOF")
 		break
-
 	if(userinput[0]=='startin'):
 		#print("startin")
 		g.addVertex(userinput[1])
@@ -134,7 +111,7 @@ while(True):
 			matrix[i][j] = userinput[j]
 	i=i+1
 printMatrix(matrix)
-
 path = solve_tsp(matrix)
-print(path)
-# TODO aqui encontrar caminho
+distance = calcDistance(path, matrix)
+print("Encontrou o melhor caminho:",path,"com distância de",distance)
+

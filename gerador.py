@@ -19,7 +19,7 @@ def mapas(num):
                 matrix[i][k] = dist
                 matrix[k][i] = dist
     # print("M:",matrix)
-    filename = "tarefa_1" + str(number) + ".txt"
+    filename = "tarefa_1_" + str(number) + ".txt"
     create_file(number,matrix,filename)
 #dif
 def mapas2(num):

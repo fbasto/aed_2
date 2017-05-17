@@ -1,7 +1,10 @@
 from __future__ import print_function, division
 from itertools import islice
 from array import array as pyarray
-
+################################################################################
+# A simple algorithm for solving the Travelling Salesman Problem
+# Finds a suboptimal solution
+################################################################################
 if "xrange" not in globals():
     #py3
     xrange = range
@@ -21,7 +24,7 @@ def optimize_solution( distances, connections ):
         b = a+1
         for c in xrange( b+2, N-1):
             d = c+1
-            delta_d = (int(ds(a,b)+ds(c,d))) - int(ds(a,c)+ds(b,d))
+            delta_d = int(ds(a,b)+ds(c,d)) - int(( ds(a,c)+ds(b,d)))
             if delta_d > 0:
                 d_total += delta_d
                 optimizations += 1
