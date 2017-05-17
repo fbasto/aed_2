@@ -1,4 +1,4 @@
-import tsp_solver
+from tsp_solver import *
 
 class Graph:
 	def __init__(self):
@@ -135,5 +135,6 @@ while(True):
 	i=i+1
 printMatrix(matrix)
 
-
+path = solve_tsp(matrix)
+print(path)
 # TODO aqui encontrar caminho
