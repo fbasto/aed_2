@@ -37,15 +37,21 @@ class Vertex:
 	def __init__(self,key):
 		self.id = key
 		self.connectedTo = {}
+		self.strConnections = set()
 		self.boolstartin = False
 	def addNeighbor(self,nbr,weight=0):
 		self.connectedTo[nbr] = weight
+		nbr.connectedTo[self] = weight
+		self.strConnections.add(nbr.getId())
+		nbr.strConnections.add(self.id)
 	def starter(self):
 		self.boolstartin = True
 	def __str__(self):
 		return str(self.id) + ' connectedTo: ' + str([x.id for x in self.connectedTo])
 	def getConnections(self):
 		return self.connectedTo.keys()
+	def getStrConnections(self):
+		return self.strConnections
 	def getId(self):
 		return self.id
 	def getWeight(self,nbr):
@@ -69,13 +75,31 @@ def calcDistance(path, matrix):
 	dist = 0
 	priorvertex = 0
 	for i in range(1,len(path)):
-		dist = dist + int(matrix[priorvertex][i-1])
-		priorvertex = i-1
-		print("dist updated to:",dist)
-	dist = dist + int(matrix[priorvertex][0])
-	print("final dist:",dist)
+		# print("traveling from",priorvertex+1,"to",i+1)
+		dist = dist + int(matrix[int(path[priorvertex])-1][int(path[i])-1])
+		priorvertex = i
+		# print("dist updated to:",dist)
+	dist = dist + int(matrix[int(path[priorvertex])-1][int(path[i])-1])
+	# print("final dist:",dist)
 	return dist
 
+def dfs_paths(graph, start):
+    stack = [(start, [start])]
+    while stack:
+        (vertex, path) = stack.pop()
+        connections = (graph.getVertex(vertex)).getStrConnections()
+        for next in connections - set(path):
+            # print("Checking",connections,"-",set(path))
+            if len(graph.getVertices()) == len(path)+1:
+                yield path + [next]
+                #print("len path =",len(path))
+                #print("len graph =",len(graph))
+                #print("path found=",path)
+            else:
+                stack.append((next, path + [next]))
+
+def dfs_paths_optimized(graph,start):
+	print("TODO")
 
 
 g = Graph()
@@ -111,7 +135,22 @@ while(True):
 			matrix[i][j] = userinput[j]
 	i=i+1
 printMatrix(matrix)
-path = solve_tsp(matrix)
-distance = calcDistance(path, matrix)
-print("Encontrou o melhor caminho:",path,"com distância de",distance)
+
+
+# debug
+# for i in g.getVertices():
+# 	print(g.getVertex(i))
+
+paths = list(dfs_paths(g,g.getStarter().getId()))
+bestPath = 0
+bestDist = 0
+for i in list(paths):
+	print(i)
+	newDist = calcDistance(i,matrix)
+	if bestDist == 0 or (bestPath[0] != 0 and newDist < bestDist):
+		# print("bestDist=",bestDist," e bestPath=",bestPath)
+		bestDist = newDist
+		bestPath = i
+
+print("Encontrou o melhor caminho:",bestPath,"com distância de",bestDist)
 
