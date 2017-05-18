@@ -79,7 +79,7 @@ def calcDistance(path, matrix):
 		dist = dist + int(matrix[int(path[priorvertex])-1][int(path[i])-1])
 		priorvertex = i
 		# print("dist updated to:",dist)
-	dist = dist + int(matrix[int(path[priorvertex])-1][int(path[i])-1])
+	dist = dist + int(matrix[int(path[priorvertex])-1][int(path[0])-1])
 	# print("final dist:",dist)
 	return dist
 
