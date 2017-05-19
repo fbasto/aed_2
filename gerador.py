@@ -80,7 +80,10 @@ def create_file(number,matrix,filename):
                     # print("String: ",aux)
                     f.write(aux)
 
-    f.write("M\n")
+    if(iguais):
+        f.write("M\n")
+    else:
+        f.write("m\n")
     for i in range(number):
         aux = ""
         for j in range(number):
@@ -95,9 +98,10 @@ def create_file(number,matrix,filename):
 
 if __name__ == '__main__':
     while(True):
+         print("Gerador de mapas")
          userop = eval(input("1) Criar novo mapa\n2) Sair\n"))
          if (userop == 1):
-            userop2 = eval(input("1)Mapa com distancias entre duas cidades iguais(ambos os sentidos)\n2)Mapa com distancia diferentes entre cidades\n"))
+            userop2 = eval(input("1)Mapa com distancias iguais entre ambos sentidos de duas cidades\n2)Mapa com distancias diferentes entre ambos sentidos de duas cidades\n"))
             if(userop2 == 1):
                 x = input("Tamanho do mapa: ")
                 mapas(x)
