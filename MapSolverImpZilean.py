@@ -1,10 +1,12 @@
 from tsp_solver import *
+import sys
 import time
 
 class Graph:
 	def __init__(self):
 		self.vertList = {}
 		self.numVertices = 0
+		self.symmetric = 1
 	def addVertex(self,key):
 		self.numVertices = self.numVertices + 1
 		newVertex = Vertex(key)
@@ -17,12 +19,14 @@ class Graph:
 			return None
 	def __contains__(self,n):
 		return n in self.vertList
+	def setSymmetric(self,boolval):
+		self.symmetric = boolval
 	def addEdge(self,f,t,cost=0):
 		if f not in self.vertList:
 			nv = self.addVertex(f)
 		if t not in self.vertList:
 			nv = self.addVertex(t)
-		self.vertList[f].addNeighbor(self.vertList[t], cost)
+		self.vertList[f].addNeighbor(self.vertList[t], cost, self.symmetric)
 	def getVertices(self):
 		return self.vertList.keys()
 	def getStarter(self):
@@ -40,11 +44,12 @@ class Vertex:
 		self.connectedTo = {}
 		self.strConnections = set()
 		self.boolstartin = False
-	def addNeighbor(self,nbr,weight=0):
+	def addNeighbor(self,nbr,weight=0,symmetric=1):
 		self.connectedTo[nbr] = weight
-		nbr.connectedTo[self] = weight
 		self.strConnections.add(nbr.getId())
-		nbr.strConnections.add(self.id)
+		if(symmetric==1):
+			nbr.connectedTo[self] = weight
+			nbr.strConnections.add(self.id)
 	def starter(self):
 		self.boolstartin = True
 	def __str__(self):
@@ -117,16 +122,17 @@ def dfs_paths(graph, start):
 					stack.append((next, path + [next], newDist + int(matrix[int(path[len(path)-1])-1][int(graph.getVertex(next).getId())-1])))
 	print("Encontrou o melhor caminho:",best[1],"com distância de",best[0])
 
-
-def dfs_paths_optimized(graph,start):
-	print("TODO")
-
 if __name__ == "__main__":
 	g = Graph()
 	print("Para adicionar o nó inicial: \"startin <nome>\" ;\nPara adicionar ligação entre dois nós: \"<nó1> <nó2> <peso>\" .")
 	while(True):
 		userinput = input().split(' ')
-		if(userinput[0]=='M'):
+		if(userinput[0]=='M'): # IGUAIS
+			g.setSymmetric(1)
+			#print("breaking because EOF")
+			break
+		elif(userinput[0]=='m'): # DIFERENTES
+			g.setSymmetric(0)
 			#print("breaking because EOF")
 			break
 		if(userinput[0]=='startin'):
