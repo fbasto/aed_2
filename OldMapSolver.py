@@ -86,36 +86,19 @@ def calcDistance(path, matrix):
 	return dist
 
 def dfs_paths(graph, start):
-	lenGraph = len(graph.getVertices())
-	best = [0,0]
-	stack = [(start, [start], 0)]
-	newDist = 0
-	while stack:
-		(vertex, path, newDist) = stack.pop()
-		# print("stack=",stack)
-		# print("vertex=",(vertex, path))
-		connections = (graph.getVertex(vertex)).getStrConnections()
-		for next in connections - set(path):
-			# print("path=",path)
-			# print("Checking",connections,"-",set(path))
-			if lenGraph == len(path)+1:
-				# print("complete path found=",path+[next])
-				finalDist = newDist+int(matrix[int(path[len(path)-1])-1][int(graph.getVertex(next).getId())-1])
-				finalDist = finalDist+int(matrix[int(graph.getVertex(next).getId())-1][0])
-				if best[0] == 0 or (best[0] != 0 and finalDist < best[0]):
-					# print("bestDist=",best[0]," e bestPath=",best[1])
-					best[1] = path+[next]
-					best[0] = finalDist
-
-
-				#print("len path =",len(path))
-				#print("len graph =",len(graph))
-				# print("path found=",path)
-			else:
-				# print("lenpath=", len(path),"->path[len(path)-1]=",path[len(path)-1],"com next=",graph.getVertex(next).getId())
-				stack.append((next, path + [next], newDist + int(matrix[int(path[len(path)-1])-1][int(graph.getVertex(next).getId())-1])))
-	print("Encontrou o melhor caminho:",best[1],"com distância de",best[0])
-
+    stack = [(start, [start])]
+    while stack:
+        (vertex, path) = stack.pop()
+        connections = (graph.getVertex(vertex)).getStrConnections()
+        for next in connections - set(path):
+            # print("Checking",connections,"-",set(path))
+            if len(graph.getVertices()) == len(path)+1:
+                yield path + [next]
+                #print("len path =",len(path))
+                #print("len graph =",len(graph))
+                #print("path found=",path)
+            else:
+                stack.append((next, path + [next]))
 
 def dfs_paths_optimized(graph,start):
 	print("TODO")
@@ -162,19 +145,19 @@ if __name__ == "__main__":
 
 
 	start=time.time()
-#OPÇAO 1
-	# paths = list(dfs_paths(g,g.getStarter().getId()))
-	# bestPath = 0
-	# bestDist = 0
-	# for i in list(paths):
-	# 	# print(i)
-	# 	newDist = calcDistance(i,matrix)
-	# 	if bestDist == 0 or (bestPath[0] != 0 and newDist < bestDist):
-	# 		# print("bestDist=",bestDist," e bestPath=",bestPath)
-	# 		bestDist = newDist
-	# 		bestPath = i
-#OPÇAO 2
-	dfs_paths(g,g.getStarter().getId())
+
+	paths = list(dfs_paths(g,g.getStarter().getId()))
+	bestPath = 0
+	bestDist = 0
+	for i in list(paths):
+		# print(i)
+		newDist = calcDistance(i,matrix)
+		if bestDist == 0 or (bestDist != 0 and newDist < bestDist):
+			# print("bestDist=",bestDist," e bestPath=",bestPath)
+			bestDist = newDist
+			bestPath = i
+
+	print("Encontrou o melhor caminho:",bestPath,"com distância de",bestDist)
 
 	end = time.time()
 	print("Operacao demorou: %.10f segundos"%(end-start))
