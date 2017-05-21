@@ -109,7 +109,7 @@ def dfs_paths(graph, start):
 					finalDist = newDist+int(matrix[int(path[len(path)-1])-1][int(graph.getVertex(next).getId())-1])
 					finalDist = finalDist+int(matrix[int(graph.getVertex(next).getId())-1][0])
 					if best[0] == 0 or (best[0] != 0 and finalDist < best[0]):
-						# print("bestDist=",best[0]," e bestPath=",best[1])
+						#print("bestDist=",best[0]," e bestPath=",best[1])
 						best[1] = path+[next]
 						best[0] = finalDist
 
